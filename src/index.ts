@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import yargs from 'yargs'
 import TemplateController from './TemplateController'
 import { cosmiconfigSync } from 'cosmiconfig'
