@@ -1,5 +1,6 @@
 import AbstractTemplate from '../AbstractTemplate'
 import path from 'path'
+import fs from 'fs-extra'
 
 interface TemplateControllerSettings {
   name: string
@@ -8,7 +9,7 @@ interface TemplateControllerSettings {
 }
 
 export default class TemplateController<Variables extends object = any> {
-  private templateClass: AbstractTemplate<Variables>
+  private template: AbstractTemplate<Variables>
   private workingDir: string
 
   constructor({ name, source, workingDir = '' }: TemplateControllerSettings) {
@@ -29,6 +30,19 @@ export default class TemplateController<Variables extends object = any> {
     if (!AbstractTemplate.isPrototypeOf(templateClass)) {
       throw new Error(`Template "${name}" doesn't extend AbstractTemplate`)
     }
-    this.templateClass = new (templateClass as new () => AbstractTemplate<Variables>)()
+    this.template = new (templateClass as new () => AbstractTemplate<Variables>)()
+  }
+
+  async generate(variables: Variables) {
+    await this.template.validate(variables)
+    const files = this.template.generate(variables)
+    for (const fileName of Object.keys(files)) {
+      const filePath = path.resolve(this.workingDir, fileName)
+      if (await fs.pathExists(filePath)) throw new Error(`File "${filePath}" already exists.`)
+    }
+    for (const fileName in files) {
+      const filePath = path.resolve(this.workingDir, fileName)
+      await fs.outputFile(filePath, files[fileName])
+    }
   }
 }

@@ -29,7 +29,7 @@ export default abstract class AbstractTemplate<Variables extends object> {
     }
   }
 
-  public getStructure(variables: Variables): TemplateStructure<Variables> {
+  public generate(variables: Variables): TemplateStructure<Variables> {
     const filesStructure = this.prepareStructure(variables)
     if (Object.keys(filesStructure).length === 0)
       throw new Error(`Template ${this.getName()} should generate al least one file; check prepareStructure method.`)

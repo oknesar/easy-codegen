@@ -39,12 +39,12 @@ describe('Template', () => {
   })
 
   test('Template should have output structure', () => {
-    expect(template.getStructure({ path: 'string' })).toStrictEqual({
+    expect(template.generate({ path: 'string' })).toStrictEqual({
       [path.join('components/', 'index.js')]: testStructure['index.js'],
     })
   })
 
   test("Template structure can't be empty", () => {
-    expect(() => template.getStructure({ path: 'string', noFile: true })).toThrowError()
+    expect(() => template.generate({ path: 'string', noFile: true })).toThrowError()
   })
 })
