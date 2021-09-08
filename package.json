@@ -2,7 +2,8 @@
   "name": "easy-codegen",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
+  "bin": "dist/index.js",
   "dependencies": {
     "@types/cosmiconfig": "^6.0.0",
     "@types/fs-extra": "^9.0.12",
