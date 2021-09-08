@@ -1,9 +1,11 @@
 {
-  "name": "easy-codegen",
+  "name": "@oknesar/easy-codegen",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
-  "bin": "dist/index.js",
+  "bin": {
+    "easy-codegen": "dist/index.js"
+  },
   "dependencies": {
     "@types/cosmiconfig": "^6.0.0",
     "@types/fs-extra": "^9.0.12",

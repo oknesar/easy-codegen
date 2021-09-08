@@ -3,7 +3,7 @@ import TemplateController from './TemplateController'
 import { cosmiconfigSync } from 'cosmiconfig'
 import { CosmiconfigResult } from 'cosmiconfig/dist/types'
 
-const moduleName = require('../package.json').name
+const moduleName = require('../package.json').name.split('/').pop()
 const { config, filepath: configFilepath }: Partial<CosmiconfigResult> = cosmiconfigSync(moduleName).search() ?? {}
 const configFormats = [
   `package.json["${moduleName}"]`,
