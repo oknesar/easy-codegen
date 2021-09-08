@@ -5,7 +5,7 @@ class DefaultTemplate extends AbstractTemplate<{}> {
   validationSchema = {}
   protected prepareStructure(variables: {}) {
     return {
-      './index.js': `console.log('hello world')`,
+      './index.ts': `console.log(  'hello world')`,
     }
   }
 }

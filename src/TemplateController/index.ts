@@ -1,6 +1,7 @@
-import AbstractTemplate from '../AbstractTemplate'
+import AbstractTemplate, { TemplateStructure } from '../AbstractTemplate'
 import path from 'path'
 import fs from 'fs-extra'
+import prettier from 'prettier'
 
 interface TemplateControllerSettings {
   name: string
@@ -36,13 +37,34 @@ export default class TemplateController<Variables extends object = any> {
   async generate(variables: Variables) {
     await this.template.validate(variables)
     const files = this.template.generate(variables)
+    await this.validateFilesDontExists(files)
+    await this.writeTemplate(files, variables)
+  }
+
+  async validateFilesDontExists(files: TemplateStructure<Variables>) {
     for (const fileName of Object.keys(files)) {
       const filePath = path.resolve(this.workingDir, fileName)
       if (await fs.pathExists(filePath)) throw new Error(`File "${filePath}" already exists.`)
     }
+  }
+
+  async writeTemplate(files: TemplateStructure<Variables>, variables: Variables) {
+    const prettierConfig = await prettier.resolveConfig(process.cwd())
+
     for (const fileName in files) {
       const filePath = path.resolve(this.workingDir, fileName)
-      await fs.outputFile(filePath, files[fileName])
+      const content = files[fileName]
+      let text = typeof content === 'function' ? content(variables) : content
+      const prettierInfo = await prettier.getFileInfo(filePath)
+
+      if (prettierConfig && !prettierInfo.ignored && prettierInfo.inferredParser) {
+        text = prettier.format(text, {
+          ...prettierConfig,
+          parser: prettierInfo.inferredParser,
+        })
+      }
+
+      await fs.outputFile(filePath, text)
     }
   }
 }

@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs-extra'
 
 describe('TemplateController', () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await fs.remove(path.resolve(__dirname, './output'))
   })
 

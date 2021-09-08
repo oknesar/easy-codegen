@@ -3,7 +3,7 @@ import { AnySchema, ValidationError } from 'yup'
 import { mapKeys } from 'lodash'
 import path from 'path'
 
-type TemplateStructure<V extends object> = Record<string, string | ((variables: V) => string)>
+export type TemplateStructure<V extends object> = Record<string, string | ((variables: V) => string)>
 
 export default abstract class AbstractTemplate<Variables extends object> {
   protected abstract name: string
