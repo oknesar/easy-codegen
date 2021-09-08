@@ -1,5 +1,7 @@
 import * as Yup from 'yup'
 import { AnySchema, ValidationError } from 'yup'
+import { mapKeys } from 'lodash'
+import path from 'path'
 
 type TemplateStructure<V extends object> = Record<string, string | ((variables: V) => string)>
 
@@ -7,6 +9,8 @@ export default abstract class AbstractTemplate<Variables extends object> {
   protected abstract name: string
   protected abstract validationSchema: { [name in keyof Variables]: AnySchema }
   protected abstract prepareStructure(variables: Variables): TemplateStructure<Variables>
+
+  public basePath = './'
 
   public getName() {
     return this.name
@@ -29,6 +33,8 @@ export default abstract class AbstractTemplate<Variables extends object> {
     const filesStructure = this.prepareStructure(variables)
     if (Object.keys(filesStructure).length === 0)
       throw new Error(`Template ${this.getName()} should generate al least one file; check prepareStructure method.`)
-    return filesStructure
+    return mapKeys(filesStructure, (_, key) => {
+      return path.join(this.basePath, key)
+    })
   }
 }

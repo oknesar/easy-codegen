@@ -1,15 +1,17 @@
 import AbstractTemplate from '../AbstractTemplate'
 import * as Yup from 'yup'
 import { ValidationError } from 'yup'
+import path from 'path'
 
 describe('Template', () => {
   type Variables = { noFile?: boolean; path: string }
   const testStructure = {
-    './index.js': `console.log('hello world')`,
+    'index.js': `console.log('hello world')`,
   }
 
   class Template extends AbstractTemplate<Variables> {
     name = 'Template name'
+    override basePath = 'components'
     validationSchema = {
       path: Yup.string().required(),
       noFile: Yup.boolean(),
@@ -37,7 +39,9 @@ describe('Template', () => {
   })
 
   test('Template should have output structure', () => {
-    expect(template.getStructure({ path: 'string' })).toBe(testStructure)
+    expect(template.getStructure({ path: 'string' })).toStrictEqual({
+      [path.join('components/', 'index.js')]: testStructure['index.js'],
+    })
   })
 
   test("Template structure can't be empty", () => {
