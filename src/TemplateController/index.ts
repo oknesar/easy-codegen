@@ -4,22 +4,18 @@ import fs from 'fs-extra'
 import prettier from 'prettier'
 
 interface TemplateControllerSettings {
-  name: string
-  source: string
+  templateName: string
+  templateDir: string
   workingDir?: string
 }
 
 export default class TemplateController<Variables extends object = any> {
   private template: AbstractTemplate<Variables>
-  private workingDir: string
+  private readonly workingDir: string
 
-  constructor({ name, source, workingDir = '' }: TemplateControllerSettings) {
-    this.resolveWorkingDir(workingDir)
-    this.initTemplate(name, source)
-  }
-
-  private resolveWorkingDir(workingDir: string) {
-    this.workingDir = path.isAbsolute(workingDir) ? workingDir : path.resolve(process.cwd(), workingDir)
+  constructor({ templateName, templateDir, workingDir = '' }: TemplateControllerSettings) {
+    this.workingDir = this.resolveDir(workingDir)
+    this.initTemplate(templateName, this.resolveDir(templateDir))
   }
 
   private initTemplate(name: string, source: string) {
@@ -35,7 +31,8 @@ export default class TemplateController<Variables extends object = any> {
   }
 
   async generate(variables: Variables) {
-    await this.template.validate(variables)
+    const error = await this.template.validate(variables)
+    if (error) throw error
     const files = this.template.generate(variables)
     await this.validateFilesDontExists(files)
     await this.writeTemplate(files, variables)
@@ -66,5 +63,9 @@ export default class TemplateController<Variables extends object = any> {
 
       await fs.outputFile(filePath, text)
     }
+  }
+
+  resolveDir(dir: string) {
+    return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir)
   }
 }

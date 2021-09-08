@@ -3,3 +3,4 @@ dist
 yarn.lock
 .idea
 src/tests/output
+.easy-codegenrc
