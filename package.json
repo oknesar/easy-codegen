@@ -3,7 +3,7 @@
   "description": "CLI tool for easy regeneration of code templates",
   "author": "Vladyslav Rasenko",
   "license": "ISC",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "src/cli.ts",
   "bin": {
     "easy-codegen": "dist/cli.js",
