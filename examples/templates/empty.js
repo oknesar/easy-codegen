@@ -1,4 +1,4 @@
-const AbstractTemplate = require('@oknesar/easy-codegen/dist/core/AbstractTemplate').default
+const { AbstractTemplate } = require('@oknesar/easy-codegen')
 
 class EmptyTemplate extends AbstractTemplate {
   name = 'Template name'

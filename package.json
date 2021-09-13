@@ -4,14 +4,15 @@
   "author": "Vladyslav Rasenko",
   "license": "ISC",
   "version": "1.0.4",
-  "main": "src/cli.ts",
+  "main": "dist/index.js",
   "bin": {
     "easy-codegen": "dist/cli.js",
     "easy-codegen-ts": "src/ts-cli.ts"
   },
   "scripts": {
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "rm -rf dist & tsc"
   },
   "dependencies": {
     "@types/cosmiconfig": "^6.0.0",
