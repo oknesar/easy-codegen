@@ -1,4 +1,4 @@
-import TemplateController from '../TemplateController'
+import TemplateController from '../core/TemplateController'
 import path from 'path'
 import fs from 'fs-extra'
 

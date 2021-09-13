@@ -1,4 +1,4 @@
-import AbstractTemplate from '../../AbstractTemplate'
+import AbstractTemplate from '../../core/AbstractTemplate'
 
 class DefaultTemplate extends AbstractTemplate<{}> {
   name = 'Default'

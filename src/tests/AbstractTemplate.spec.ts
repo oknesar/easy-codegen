@@ -1,4 +1,4 @@
-import AbstractTemplate from '../AbstractTemplate'
+import AbstractTemplate from '../core/AbstractTemplate'
 import * as Yup from 'yup'
 import { ValidationError } from 'yup'
 import path from 'path'

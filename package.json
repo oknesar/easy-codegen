@@ -4,9 +4,9 @@
   "author": "Vladyslav Rasenko",
   "license": "ISC",
   "version": "1.0.2",
-  "main": "src/index.ts",
+  "main": "src/cli.ts",
   "bin": {
-    "easy-codegen": "dist/index.js"
+    "easy-codegen": "dist/cli.js"
   },
   "scripts": {
     "test": "jest",
