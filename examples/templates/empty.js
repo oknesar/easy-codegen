@@ -1,4 +1,4 @@
-import AbstractTemplate from '@oknesar/easy-codegen/dist/AbstractTemplate'
+const AbstractTemplate = require('@oknesar/easy-codegen/dist/core/AbstractTemplate').default
 
 class EmptyTemplate extends AbstractTemplate {
   name = 'Template name'
@@ -12,4 +12,4 @@ class EmptyTemplate extends AbstractTemplate {
   }
 }
 
-export default EmptyTemplate
+module.exports = EmptyTemplate

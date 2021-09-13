@@ -6,7 +6,8 @@
   "version": "1.0.3",
   "main": "src/cli.ts",
   "bin": {
-    "easy-codegen": "dist/cli.js"
+    "easy-codegen": "dist/cli.js",
+    "easy-codegen-ts": "src/ts-cli.ts"
   },
   "scripts": {
     "test": "jest",
