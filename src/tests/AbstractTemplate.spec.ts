@@ -1,5 +1,4 @@
 import AbstractTemplate from '../core/AbstractTemplate'
-import * as Yup from 'yup'
 import { ValidationError } from 'yup'
 import path from 'path'
 
@@ -12,10 +11,10 @@ describe('Template', () => {
   class Template extends AbstractTemplate<Variables> {
     name = 'Template name'
     override basePath = 'components'
-    validationSchema = {
+    validationSchema: AbstractTemplate<Variables>['validationSchema'] = (Yup) => ({
       path: Yup.string().required(),
       noFile: Yup.boolean(),
-    }
+    })
 
     prepareStructure(variables: Variables) {
       if (variables.noFile) return {}

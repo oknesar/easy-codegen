@@ -7,7 +7,7 @@ export type TemplateStructure<V extends object> = Record<string, string | ((vari
 
 export default abstract class AbstractTemplate<Variables extends object> {
   protected abstract name: string
-  protected abstract validationSchema: { [name in keyof Variables]: AnySchema }
+  protected abstract validationSchema: (yup: typeof Yup) => { [name in keyof Variables]: AnySchema }
   protected abstract prepareStructure(variables: Variables): TemplateStructure<Variables>
 
   public basePath = './'
@@ -17,7 +17,7 @@ export default abstract class AbstractTemplate<Variables extends object> {
   }
 
   public async validate(variables: Variables) {
-    const schema = Yup.object(this.validationSchema)
+    const schema = Yup.object(this.validationSchema(Yup))
 
     try {
       await schema.validate(variables, {

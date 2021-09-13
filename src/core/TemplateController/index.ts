@@ -2,6 +2,7 @@ import AbstractTemplate, { TemplateStructure } from '../AbstractTemplate'
 import path from 'path'
 import fs from 'fs-extra'
 import prettier from 'prettier'
+import ensureAbsolutePath from '../../utils/easureAbsolutePath'
 
 interface TemplateControllerSettings {
   templateName: string
@@ -14,8 +15,8 @@ export default class TemplateController<Variables extends object = any> {
   private readonly workingDir: string
 
   constructor({ templateName, templateDir, workingDir = '' }: TemplateControllerSettings) {
-    this.workingDir = this.resolveDir(workingDir)
-    this.initTemplate(templateName, this.resolveDir(templateDir))
+    this.workingDir = ensureAbsolutePath(workingDir)
+    this.initTemplate(templateName, ensureAbsolutePath(templateDir))
   }
 
   private initTemplate(name: string, source: string) {
@@ -63,9 +64,5 @@ export default class TemplateController<Variables extends object = any> {
 
       await fs.outputFile(filePath, text)
     }
-  }
-
-  resolveDir(dir: string) {
-    return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir)
   }
 }

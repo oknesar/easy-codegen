@@ -16,4 +16,7 @@ const configFormats = [
 ]
 
 export { filepath as configFilepath, configFormats }
-export default config
+export default {
+  ...config,
+  moduleName,
+}
