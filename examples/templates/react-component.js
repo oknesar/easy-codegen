@@ -2,6 +2,7 @@ const { AbstractTemplate } = require('@oknesar/easy-codegen')
 
 class EmptyTemplate extends AbstractTemplate {
   name = 'React Component'
+
   validationSchema = (yup) => ({
     name: yup.string().required(),
     styled: yup.boolean(),
@@ -11,40 +12,34 @@ class EmptyTemplate extends AbstractTemplate {
   })
 
   prepareStructure(variables) {
-    let { name, styled = false, hooks = false, standalone = false, memo = true } = variables
-    return Object.assign(
-      {
-        [standalone && !styled && !hooks ? `./${variables.name}.js` : `./${variables.name}/index.js`]: `
-        ${[
-          memo && 'import {memo} from "react";',
-          styled && `import {${name}SC} from "./styled";`,
-          hooks && `import {} from "./hooks";`,
-        ]
-          .filter(Boolean)
-          .join('\n')}
+    let { name: path, styled = false, hooks = false, standalone = false, memo = true } = variables
+    const componentName = path.split('/').pop()
+    const imports = [
+      memo && 'import {memo} from "react";',
+      styled && `import {${componentName}SC} from "./styled";`,
+      hooks && `import {} from "./hooks";`,
+    ].filter(Boolean)
+    const rootTag = styled ? `${componentName}SC` : 'div'
+
+    return {
+      [standalone && !styled && !hooks ? `./${path}.js` : `./${path}/index.js`]: `
+        ${imports.join('\n')}
         
-        const ${name} = props => {
-          return <${styled ? `${name}SC` : 'div'}></${styled ? `${name}SC` : 'div'}>
+        const ${componentName} = props => {
+          return <${rootTag}></${rootTag}>
         }
         
-        export default ${memo ? `memo(${name})` : name}
+        export default ${memo ? `memo(${componentName})` : componentName}
       `,
-      },
-      styled
-        ? {
-            [`./${variables.name}/styled.js`]: `
+      [`./${path}/styled.js`]:
+        styled &&
+        `
             import styled from 'styled-components'
             
-            export const ${name}SC = styled.div\`\`
+            export const ${componentName}SC = styled.div\`\`
             `,
-          }
-        : {},
-      hooks
-        ? {
-            [`./${variables.name}/hooks.js`]: ``,
-          }
-        : {}
-    )
+      [`./${path}/hooks.js`]: hooks && ``,
+    }
   }
 }
 
