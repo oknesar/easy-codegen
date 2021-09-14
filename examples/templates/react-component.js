@@ -2,7 +2,6 @@ const { AbstractTemplate } = require('@oknesar/easy-codegen')
 
 class EmptyTemplate extends AbstractTemplate {
   name = 'React Component'
-
   validationSchema = (yup) => ({
     name: yup.string().required(),
     styled: yup.boolean(),
